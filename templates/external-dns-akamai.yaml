@@ -57,10 +57,10 @@ spec:
         - --source=ingress  # or ingress or both
         - --source=service
         - --provider=akamai
-        - --domain-filter=smu-labs.cl
+        - --domain-filter={{ DOMAIN}} #smu-labs.cl
         # zone-id-filter may be specified as well to filter on contract ID
         - --registry=txt
-        - --txt-owner-id=huawei-santiago-factory-front-develop
+        - --txt-owner-id={{ CLUSTER_NAME}}  #huawei-santiago-factory-front-develop
         - --txt-prefix=_txt_
         - --log-level=trace
         env:
