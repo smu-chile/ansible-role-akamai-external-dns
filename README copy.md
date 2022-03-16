@@ -40,4 +40,4 @@ BSD
 Author Information
 ------------------
 
-- [Fchamor](mailto:fchamorro@smu.cl)
+- [Sensei](mailto:sensei@dioses.cl)
