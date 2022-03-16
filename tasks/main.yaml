@@ -16,16 +16,6 @@
     - "{{ REGION }}"
   no_log: True
 
-# - name: CCE-Configure
-#   shell: |
-#     aws configure set aws_access_key_id {{ HUAWEI_ACCESS_KEY_ID }}
-#     aws configure set aws_secret_access_key {{ HUAWEI_SECRET_ACCESS_KEY }}
-#     aws configure set default.region {{ REGION }}
-
-# - name: Obtain Cluster IAMServiceAccount
-#   shell: eksctl get iamserviceaccount --cluster="{{ CLUSTER_NAME }}" --name=external-dns -o json | jq -r 'select(.[].metadata.namespace | contains("default")) | .[].status[]'
-#   register: iamserviceaccount
-
 - name: Creating external-dns-akamai.yaml
   template:
     src: external-dns-akamai.yaml

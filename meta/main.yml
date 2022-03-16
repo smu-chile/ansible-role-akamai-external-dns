@@ -1,6 +1,6 @@
 galaxy_info:
-  author: Cesar Vergara
-  description: Setup external dns for AWS eks
+  author: Sensei
+  description: Setup external dns for Huawei 
   company: SMU
 
   # If the issue tracker for your role is not on github, uncomment the
