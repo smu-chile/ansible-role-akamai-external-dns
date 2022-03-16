@@ -16,25 +16,25 @@
     - "{{ REGION }}"
   no_log: True
 
-- name: AWS-Configure
-  shell: |
-    aws configure set aws_access_key_id {{ HUAWEI_ACCESS_KEY_ID }}
-    aws configure set aws_secret_access_key {{ HUAWEI_SECRET_ACCESS_KEY }}
-    aws configure set default.region {{ REGION }}
+# - name: CCE-Configure
+#   shell: |
+#     aws configure set aws_access_key_id {{ HUAWEI_ACCESS_KEY_ID }}
+#     aws configure set aws_secret_access_key {{ HUAWEI_SECRET_ACCESS_KEY }}
+#     aws configure set default.region {{ REGION }}
 
-- name: Obtain Cluster IAMServiceAccount
-  shell: eksctl get iamserviceaccount --cluster="{{ CLUSTER_NAME }}" --name=external-dns -o json | jq -r 'select(.[].metadata.namespace | contains("default")) | .[].status[]'
-  register: iamserviceaccount
+# - name: Obtain Cluster IAMServiceAccount
+#   shell: eksctl get iamserviceaccount --cluster="{{ CLUSTER_NAME }}" --name=external-dns -o json | jq -r 'select(.[].metadata.namespace | contains("default")) | .[].status[]'
+#   register: iamserviceaccount
 
-- name: Creating external-dns-deployment.yaml
+- name: Creating external-dns-akamai.yaml
   template:
-    src: external-dns-deployment.j2
-    dest: external-dns-deployment.yaml
+    src: external-dns-akamai.yaml
+    dest: external-dns-akamai.yaml
 
 - name: Setup external dns
-  shell: kubectl apply -f external-dns-deployment.yaml
+  shell: kubectl apply -f external-dns-akamai.yaml
 
-- name: Deleting external-dns-deployment.yaml
+- name: Deleting external-dns-akamai.yaml
   file:
-    path: external-dns-deployment.yaml
+    path: external-dns-akamai.yaml
     state: absent
