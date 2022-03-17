@@ -11,9 +11,7 @@
     loop_var: required_variable
   with_items:
     - "{{ CLUSTER_NAME }}"
-    - "{{ HUAWEI_ACCESS_KEY_ID}}"
-    - "{{ HUAWEI_SECRET_ACCESS_KEY }}"
-    - "{{ REGION }}"
+    - "{{ DOMAIN }}"
   no_log: True
 
 - name: Creating external-dns-akamai.yaml
