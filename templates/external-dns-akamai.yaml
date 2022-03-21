@@ -1,5 +1,19 @@
 ---
 apiVersion: v1
+data:
+  EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN: YWthYi1vanhyY2RpN3VuaXF2b2x1LXB4dzRkZHN3bHFneGVzZHo=
+  EXTERNAL_DNS_AKAMAI_CLIENT_SECRET: bmlKQ1NlenJ3TUlSekZJcWxjQUlqam1PR3cxMHNvaE5WYVRuaTNqZ3VqMD0=
+  EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN: YWthYi11N3pnbnJ4N283eTNlam5qLTNsN3N4bTdjZXFpaHNkNTc=
+  EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN: YWthYi03Z3Z1Y2NhNXE1aWhqZmtlLW5pdG91MnVsZWtpeHY1dHkubHVuYS5ha2FtYWlhcGlzLm5ldA==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: external-dns-akamai
+  namespace: default
+
+
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: external-dns
@@ -64,8 +78,23 @@ spec:
         - --txt-prefix=_txt_
         - --log-level=trace
         env:
-          EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN: ${{ secrets.EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN }}
-          EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN: ${{ secrets.EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN }}
-          EXTERNAL_DNS_AKAMAI_CLIENT_SECRET: ${{ secrets.EXTERNAL_DNS_AKAMAI_CLIENT_SECRET }}
-          EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN: ${{ secrets.EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN }}
-
+        - name: EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN
+          valueFrom:
+            secretKeyRef:
+              key: EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN
+              name: external-dns-akamai
+        - name: EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN
+              name: external-dns-akamai
+        - name: EXTERNAL_DNS_AKAMAI_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: EXTERNAL_DNS_AKAMAI_CLIENT_SECRET
+              name: external-dns-akamai
+        - name: EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN
+              name: external-dns-akamai
