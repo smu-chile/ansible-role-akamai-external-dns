@@ -22,7 +22,7 @@
 - name: Setup external dns
   shell: kubectl apply -f external-dns-akamai.yaml
 
-- name: Deleting external-dns-akamai.yaml
-  file:
-    path: external-dns-akamai.yaml
-    state: absent
+# - name: Deleting external-dns-akamai.yaml
+#   file:
+#     path: external-dns-akamai.yaml
+#     state: absent
