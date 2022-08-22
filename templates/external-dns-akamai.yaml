@@ -1,0 +1,104 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: external-dns-akamai
+  namespace: default
+spec:
+  encryptedData:
+    EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN: AQBef4p/8Zb67jCHDm9SYGqgbiqP4MZ7r4Iz+vCnkJRzF+p+HMTSaltfzl3BUunQP6vd0AL9ciQBHjXUJOMXNqtuA5CE1IF1c0nb7V/OpZruZB1SRFqaN4GYW0TTEqgZ66G1CY3oJsUqsp7WtS6ilhinQYcBUL/MLja/lcQtViTrGPXX0yxlKGZ7CTkebpPK8s+e38lh4E1YAPcw730vUCewsGBEwCI3SwneoTumeJ3MHoJzOcM6UImlBgGmo2/B9F1XMikrL825p2WTYOSkYpfD9Mrakm7IBbjxG4A76d8lMqezAvxK6j3A0cDefSWnGnuo6O5L2bcNr1TyM0chFvmTt/na40dlI2dcbbHaAohkf8Hj8A544p3fcXrhrvefxN9knbpbLs/T7bDdMbeVO5AcC1c8TzUY
+    EXTERNAL_DNS_AKAMAI_CLIENT_SECRET: AQBBuJj0kl++3Kw9enF+XJCCIm4QangyYDQh3lUktlPiAx3v2qv2cmIMlqgwm3kNsQj0xRsMCiaMklMooNIL1a5RWU56rK1VTDjswSOGZZ8yRF8oKJYTdSo/KMawtL0gY4N2UEIfjmDR8wEcyR430wkULEzWoAyNMiwiEN9EYl9aAi5CCKRHvUtXvWRryrHtKpokESY5mawx53Kc9VdUPReIGavZqb/ZklWT4FnV09kDxeiJ+/pCQuYKAz+OI+osvfqZRmLk5JYQl7RW4yIpk6J/pLdZG1GQ35mBMCYHwBPufTybiHy/ASmwSMLVjhp8We36zMTnCXBAPAzT1f3bu8/SCAMcN5SLv08SOPpnCyXSxSLGWLvTe+QAar+UDyBtxCFfKrkC0xGoBjzn2bhlX1k+WIt3Hu257rMie/Tn
+    EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN: AQAfV+wCgMuH3g2eMYFaLy9xh20mxvI61rdBtNCzMhNOPjFZk788QVErh4+rGNA2hDM2RVTccLNjnRQyasNg1tYt6JbpOc2M8UjSryzww/bONgDHkJDSVSBGid3jwfsmEVodyTFyHT8P0ap9qJzIHqBGLuHOdjMJVXOUHlytH21Qw07bNEd7ILJWy8paAHUae7Vb+aEzSEWCC6chpLB27kYOPkAQbZQkmOQTm1J6o7P3p8zDb0q4lFdJ+gDO8ZF8Lsido55BJZXhwOQAVqcrQu4+fGdkEOqm6Tcd7HYrAxlP2LsMWRKjNA4EK9eM9/f/S4IYJs2WkSbYvLmpn5IYawOQo/m1iy8ZVYHrOR2qYIHeMtjkqLx6mpIirwmsCuyeKwj2TZ9BH+Zq5dWVK6aHg7LjArXlc0Z0
+    EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN: AQCYqWGmBSHAS0M2rGHuAHlVNwdxOTupEa8wloLTtRAPFhInty6jKmlUjojKbd2QIVyt00l0WZQHmyOKbaqZLtOwVmbCMNB0E4PJkWbrYlb6YnWzS4CghjzGSySXCZc6tFAeIC43c9cQ/C0CeDd69RZ1JIB65gLOviw/1O4st8mf/fIQ21NJXaL9FG27SObm/eGbl5c6RQt5vkEX7DXwOXMryijTcHFiS9vH/eaH6+mjifrhvSG6Yszw2yCHfg1QbAh0Ol6In1YSgUuEgu8gaNMxdoUNG9FLbOp/klN+pk7FVAIYkdSrr5O5emqyk+zzAnUuZzWzMY9+S8rg/r7zzwSlnniFW4jD7lZQtC52zuMu8y5dn2aJsUrJvQJQ3d/oMJ/Od1ZWCqC4tWlVtlxsWTtGEIWxyMbQwlJ/1UPkfsjQARaRMvr/hL20s8Q=
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: external-dns-akamai
+      namespace: default
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: external-dns
+  namespace: default
+---
+  apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  metadata:
+    name: external-dns
+    namespace: default
+  rules:
+  - apiGroups: [""]
+    resources: ["services","endpoints","pods"]
+    verbs: ["get","watch","list"]
+  - apiGroups: ["extensions","networking.k8s.io"]
+    resources: ["ingresses"] 
+    verbs: ["get","watch","list"]
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["watch","list","get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-dns-viewer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-dns
+subjects:
+- kind: ServiceAccount
+  name: external-dns
+  namespace: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: external-dns
+      containers:
+      - name: external-dns
+        image: k8s.gcr.io/external-dns/external-dns:v0.11.0
+        args:
+        - --source=ingress  # or ingress or both
+        - --source=service
+        - --provider=akamai
+        - --domain-filter={{ DOMAIN }} #smu-labs.cl
+        # zone-id-filter may be specified as well to filter on contract ID
+        - --registry=txt
+        - --txt-owner-id={{ CLUSTER_NAME }}  #huawei-santiago-factory-front-develop
+        - --txt-prefix=_txt_
+        - --log-level=trace
+        env:
+        - name: EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN
+          valueFrom:
+            secretKeyRef:
+              key: EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN
+              name: external-dns-akamai
+        - name: EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN
+              name: external-dns-akamai
+        - name: EXTERNAL_DNS_AKAMAI_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: EXTERNAL_DNS_AKAMAI_CLIENT_SECRET
+              name: external-dns-akamai
+        - name: EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN
+              name: external-dns-akamai
