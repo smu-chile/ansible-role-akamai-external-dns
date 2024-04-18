@@ -56,6 +56,7 @@ spec:
       - name: external-dns
         image: registry.k8s.io/external-dns/external-dns:v0.14.1
         args:
+        - --source=ingress 
         - --source=service  # or ingress or both
         - --provider=akamai
         - --domain-filter={{ DOMAIN }}
@@ -63,6 +64,8 @@ spec:
         - --registry=txt
         - --txt-owner-id={{ CLUSTER_NAME }}
         - --txt-prefix=_txt_
+        - --log-level=trace
+        - --annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)
         env:
         - name: EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN
           valueFrom:
