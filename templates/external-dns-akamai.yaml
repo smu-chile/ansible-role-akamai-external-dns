@@ -67,20 +67,20 @@ spec:
         - name: EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN
           valueFrom:
             secretKeyRef:
-              name: external-dns
+              name: external-dns-akamai
               key: EXTERNAL_DNS_AKAMAI_SERVICECONSUMERDOMAIN
         - name: EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN
           valueFrom:
             secretKeyRef:
-              name: external-dns
+              name: external-dns-akamai
               key: EXTERNAL_DNS_AKAMAI_CLIENT_TOKEN
         - name: EXTERNAL_DNS_AKAMAI_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: external-dns
+              name: external-dns-akamai
               key: EXTERNAL_DNS_AKAMAI_CLIENT_SECRET
         - name: EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: external-dns
+              name: external-dns-akamai
               key: EXTERNAL_DNS_AKAMAI_ACCESS_TOKEN
