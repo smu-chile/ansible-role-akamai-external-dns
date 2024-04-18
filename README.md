@@ -1,1 +1,1 @@
-# ansible-role-huawei-akamai-external-dns
+# ansible-role-akamai-external-dns
